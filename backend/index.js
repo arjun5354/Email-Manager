@@ -29,9 +29,6 @@ const imap = new Imap({
   tlsOptions: { rejectUnauthorized: false }
 });
 
-function openInbox(cb) {
-  imap.openBox("INBOX", true, cb);
-}
 function categorizeEmail(subject = "", body = "") {
   const text = (subject + " " + body).toLowerCase();
 
@@ -44,25 +41,39 @@ function categorizeEmail(subject = "", body = "") {
   }
 }
 
-imap.once("ready", () => {
-  openInbox((err, box) => {
-    if (err) throw err;
+function fetchEmailsFromBox(boxName) {
+  imap.openBox(boxName, true, (err, box) => {
+    if (err) {
+      console.error(`Error opening ${boxName}:`, err);
+      return;
+    }
+
     imap.search(["ALL"], (err, results) => {
-      if (err) throw err;
-      if (!results.length) return console.log("No new emails.");
+      if (err) {
+        console.error(`Search error in ${boxName}:`, err);
+        return;
+      }
+      if (!results.length) {
+        console.log(`No new emails in ${boxName}.`);
+        return;
+      }
 
       const f = imap.fetch(results, { bodies: "" });
       f.on("message", (msg) => {
         msg.on("body", (stream) => {
           simpleParser(stream, async (err, parsed) => {
-            if (err) throw err;
+            if (err) {
+              console.error("Parser error:", err);
+              return;
+            }
 
-            const messageId = parsed.messageId; 
-            const senderName = parsed.from.value[0].name || parsed.from.value[0].address;
-            const senderEmail = parsed.from.value[0].address;
+            const messageId = parsed.messageId;
+            const senderName = parsed.from?.value[0]?.name || parsed.from?.value[0]?.address;
+            const senderEmail = parsed.from?.value[0]?.address;
             const subject = parsed.subject || "(No Subject)";
             const body = parsed.text || "";
             const category = categorizeEmail(subject, body);
+
             await Email.findOneAndUpdate(
               { messageId },
               {
@@ -76,19 +87,26 @@ imap.once("ready", () => {
               },
               { upsert: true, new: true }
             );
-
           });
         });
       });
 
       f.once("end", () => {
-        console.log("Done fetching emails.");
-        imap.end();
+        console.log(`Done fetching emails from ${boxName}`);
       });
     });
   });
+}
+
+imap.once("ready", () => {
+  // Fetch from inbox
+  fetchEmailsFromBox("INBOX");
+
+  // Fetch from Sent Mail (BCC copies go here in Gmail)
+  fetchEmailsFromBox("[Gmail]/Sent Mail");
 });
 
 imap.connect();
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
