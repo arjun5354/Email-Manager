@@ -19,7 +19,7 @@ Deployed on **Render**.
 - **Backend:** Node.js, Express  
 - **Database:** MongoDB  
 - **Deployment:** Render
-- **Email Ass BCC:** sales.finigenie@gmail.com  
+- **Email Use As BCC:** sales.finigenie@gmail.com  
 
 ---
 
