@@ -18,7 +18,8 @@ Deployed on **Render**.
 - **Frontend:** React, TypeScript, TailwindCSS  
 - **Backend:** Node.js, Express  
 - **Database:** MongoDB  
-- **Deployment:** Render  
+- **Deployment:** Render
+- **Email Ass BCC:** sales.finigenie@gmail.com  
 
 ---
 
