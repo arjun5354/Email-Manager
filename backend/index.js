@@ -47,7 +47,7 @@ function categorizeEmail(subject = "", body = "") {
 imap.once("ready", () => {
   openInbox((err, box) => {
     if (err) throw err;
-    imap.search(["UNSEEN"], (err, results) => {
+    imap.search(["ALL"], (err, results) => {
       if (err) throw err;
       if (!results.length) return console.log("No new emails.");
 
