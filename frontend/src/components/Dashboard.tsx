@@ -18,7 +18,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const res = await fetch("http://localhost:5000/emails"); 
+        const res = await fetch("https://email-manager-backend-aq68.onrender.com"); 
         const data = await res.json();
 
         const total = data.length;
