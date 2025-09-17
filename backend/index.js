@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-app.get("/emails", async (req, res) => {
+app.get("api/emails", async (req, res) => {
   const emails = await Email.find().sort({ timestamp: -1 });
   res.json(emails);
 });
