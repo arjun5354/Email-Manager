@@ -39,7 +39,7 @@ export const EmailList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/emails") 
+    fetch("https://email-manager-backend-api.onrender.com/api/emails") 
       .then((res) => res.json())
       .then((data) => {
         setEmails(data);
