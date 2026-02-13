@@ -9,7 +9,7 @@ Deployed on **Render**.
 ## 🚀 Live Demo
 
 - 🌐 **Frontend:** [https://email-manager-frontend.onrender.com](https://email-manager-frontend.onrender.com)  
-- ⚙️ **Backend API:** [https://email-manager-backend-aq68.onrender.com](https://email-manager-backend-aq68.onrender.com)
+- ⚙️ **Backend API:** [https://email-manager-backend-aq68.onrender.com](https://email-manager-backend-api.onrender.com)
 
 ---
 
